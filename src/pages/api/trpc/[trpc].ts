@@ -2,6 +2,8 @@ import * as trpc from '@trpc/server';
 import * as trpcNext from '@trpc/server/adapters/next';
 import { z } from 'zod';
 
+import { prisma } from '../../../db/client';
+
 export const appRouter = trpc
   .router()
   .query('hello', {
@@ -15,6 +17,16 @@ export const appRouter = trpc
         greeting: `hello ${input?.text ?? 'world'}`,
       };
     },
+  })
+  .query('getWork', {
+    async resolve() {
+      const user = await prisma.user.findFirst({
+        where: {
+          username: 'Bernardo',
+        }
+      });
+       return user;
+    }
   });
 
 // export type definition of API
