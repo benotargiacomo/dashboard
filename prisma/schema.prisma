@@ -20,14 +20,14 @@ model User {
 }
 
 model Project {
-  id          String @id @default(cuid())
-  name        String @db.VarChar(30)
-  description String @db.VarChar(2000)
+  id          String  @id @default(cuid())
+  name        String  @db.VarChar(30)
+  description String  @db.VarChar(2000)
   repository  String
   deploy      String
   thumbnail   String?
   tags        Tag[]
-  author      User   @relation(fields: [authorId], references: [id])
+  author      User    @relation(fields: [authorId], references: [id])
   authorId    String
 }
 
