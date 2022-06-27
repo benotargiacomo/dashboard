@@ -1,14 +1,14 @@
 import type { NextPage } from 'next';
 
-import { trpc } from '../utils/trpc';
+import { trpc } from '@/utils/trpc';
 
-const Home: NextPage = (props: any) => {
-  const { data, isLoading } = trpc.useQuery(['getWork']);
+const Home: NextPage = () => {
+  const { data, isLoading } = trpc.useQuery(['work.getAll']);
 
   if (isLoading || !data) return <h1>Loading...</h1>
   
   return (
-    <h1>{ data.username }</h1>
+    <h1>{ data.length }</h1>
   );
 }
 
