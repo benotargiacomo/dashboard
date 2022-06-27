@@ -13,27 +13,24 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  username String    @unique
+  id       String @id @default(cuid())
+  username String @unique
   password String
-  projects Project[]
 }
 
 model Project {
   id          String  @id @default(cuid())
-  name        String  @db.VarChar(30)
-  description String  @db.VarChar(2000)
+  name        String
+  description String
   repository  String
   deploy      String
   thumbnail   String?
   tags        Tag[]
-  author      User    @relation(fields: [authorId], references: [id])
-  authorId    String
 }
 
 model Tag {
   id   String @id @default(cuid())
-  name String
+  name String @unique
 
   projects Project[]
 }
