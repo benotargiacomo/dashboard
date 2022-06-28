@@ -1,4 +1,5 @@
 import * as trpc from '@trpc/server';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { prisma } from '@/db/client';
@@ -36,6 +37,13 @@ export const workRouter = trpc.router()
           }
         },
       })
+
+      if (!work) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `No post with id '${input.id}'`,
+        });
+      }
       
       return work;
     }
