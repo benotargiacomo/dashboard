@@ -2,17 +2,23 @@ import React from 'react';
 import Link from 'next/link';
 import { trpc } from '@/utils/trpc';
 
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
+// import { Header } from '@/components/header';
+// import { Footer } from '@/components/footer';
 
 const Home: React.FC = () => {
   const { data, status } = trpc.useQuery(['work.getAll']);
   
   if (status === 'loading') return <h1>Loading...</h1>;
 
+  // useEffect(() => {
+  //   for (const { id } of postsQuery.data ?? []) {
+  //     utils.prefetchQuery(['post.byId', { id }]);
+  //   }
+  // }, [postsQuery.data, utils]);
+
   return (
     <>
-      <Header />
+      {/* <Header /> */}
           <li>
         {data?.map((work) => (
           <ul className="flex flex-col gap-2" key={work.id}>
@@ -30,7 +36,7 @@ const Home: React.FC = () => {
           </ul>
         ))}
       </li>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
