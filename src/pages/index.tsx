@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { trpc } from '@/utils/trpc';
 
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+// import { Header } from '@/components/Header';
+// import { Footer } from '@/components/Footer';
 
 const Home: React.FC = () => {
   const { data, status } = trpc.useQuery(['work.getAll']);
@@ -18,7 +18,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
           <li>
         {data?.map((work) => (
           <ul className="flex flex-col gap-2" key={work.id}>
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
           </ul>
         ))}
       </li>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
