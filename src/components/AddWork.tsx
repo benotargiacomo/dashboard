@@ -7,32 +7,36 @@ import { z } from 'zod';
 import { Error } from '@/components/Error';
 
 const addSchema = z.object({
-  name: z.string()
+  name: z
+    .string()
     .min(1, { message: 'Name is required' })
-    .max(50, { message: 'Name must contain at most 40 character(s)'}),
-  description: z.string()
+    .max(50, { message: 'Name must contain at most 40 character(s)' }),
+  description: z
+    .string()
     .min(1, { message: 'Description is required' })
-    .max(200, { message: 'Description must contain at most 200 character(s)'}),
-  repository: z.string()
+    .max(200, { message: 'Description must contain at most 200 character(s)' }),
+  repository: z
+    .string()
     .min(1, { message: 'Repository is required' })
     .url({ message: 'Invalid url' }),
-  deploy: z.string()
+  deploy: z
+    .string()
     .min(1, { message: 'Deploy is required' })
     .url({ message: 'Invalid url' }),
-  thumbnail: z.string()
+  thumbnail: z
+    .string()
     .min(1, { message: 'Thumbnail is required' })
     .url({ message: 'Invalid url' }),
-  tags: z.string()
-    .min(1, { message: 'Tags is required' }),
-})
+  tags: z.string().min(1, { message: 'Tags is required' }),
+});
 
 type Inputs = z.infer<typeof addSchema>;
 
 interface AddProps {
-	addProjectToggle: () => void
+	setAddIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const AddWork: React.FC<AddProps> = ({ addProjectToggle }) => {
+export const AddWork: React.FC<AddProps> = ({ setAddIsVisible }) => {
   const utils = trpc.useContext();
   const { mutateAsync } = trpc.useMutation('work.create', {
     async onSuccess() {
@@ -46,7 +50,7 @@ export const AddWork: React.FC<AddProps> = ({ addProjectToggle }) => {
     reset,
     formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>({
-		defaultValues: {
+    defaultValues: {
       name: '',
       description: '',
       repository: '',
@@ -63,7 +67,7 @@ export const AddWork: React.FC<AddProps> = ({ addProjectToggle }) => {
     // },
   });
 
-  const addProject = (work: Inputs): void => {
+  const addProject = (work: Inputs) => {
     mutateAsync({
       name: work.name,
       description: work.description,
@@ -76,29 +80,36 @@ export const AddWork: React.FC<AddProps> = ({ addProjectToggle }) => {
 
   useEffect(() => {
     reset();
-				
-		addProjectToggle();
-  }, [isSubmitSuccessful, reset, addProjectToggle]);
+		// LOG
+		console.log('render add');
+    // setAddIsVisible(false);
+  }, [isSubmitSuccessful, reset]);
 
   return (
-		<div>
-			<button type="button" onClick={ () => addProjectToggle() }>x</button>
-			<form onSubmit={handleSubmit(addProject)} className="flex flex-col gap-8">
-				<input {...register('name')} placeholder="Name" />
-				<Error>{errors.name?.message}</Error>
-				<input {...register('description')} placeholder="Description" />
-				<Error>{errors.description?.message}</Error>
-				<input {...register('repository')} placeholder="Repository" />
-				<Error>{errors.repository?.message}</Error>
-				<input {...register('deploy')} placeholder="Deploy" />
-				<Error>{errors.deploy?.message}</Error>
-				<input {...register('thumbnail')} placeholder="Thumbnail" />
-				<Error>{errors.thumbnail?.message}</Error>
-				<input {...register('tags')} placeholder="Tags" />
-				<Error>{errors.tags?.message}</Error>
-				<button type="button" onClick={ () => reset() }>RESET</button>
-				<button type="submit">ADD</button>
-			</form>
-		</div>
+    <div>
+      <button type="button" onClick={() => setAddIsVisible(false)}>
+        x
+      </button>
+      <form onSubmit={handleSubmit(addProject)} className="flex flex-col gap-8">
+        <input {...register('name')} placeholder="Name" />
+        <Error>{errors.name?.message}</Error>
+        <input {...register('description')} placeholder="Description" />
+        <Error>{errors.description?.message}</Error>
+        <input {...register('repository')} placeholder="Repository" />
+        <Error>{errors.repository?.message}</Error>
+        <input {...register('deploy')} placeholder="Deploy" />
+        <Error>{errors.deploy?.message}</Error>
+        <input {...register('thumbnail')} placeholder="Thumbnail" />
+        <Error>{errors.thumbnail?.message}</Error>
+        <input {...register('tags')} placeholder="Tags" />
+        <Error>{errors.tags?.message}</Error>
+        <button type="button" onClick={() => setAddIsVisible(false)}>
+          CANCEL
+        </button>
+        <button type="submit">
+					OK
+				</button>
+      </form>
+    </div>
   );
 };

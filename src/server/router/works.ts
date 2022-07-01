@@ -38,12 +38,12 @@ export const workRouter = trpc.router()
         },
       })
 
-      // if (!work) {
-      //   throw new TRPCError({
-      //     code: 'NOT_FOUND',
-      //     message: `No post with id '${input.id}'`,
-      //   });
-      // }
+      if (!work) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `No post with id '${input.id}'`,
+        });
+      }
       
       return work;
     }
@@ -83,12 +83,12 @@ export const workRouter = trpc.router()
     input: z.object({
       id: z.string().cuid({ message: "Invalid ID" }),
       data: z.object({
-        name: z.string().optional(),
-        description: z.string().optional(),
-        repository: z.string().optional(),
-        deploy: z.string().optional(),
-        thumbnail: z.string().optional(),
-        tags: z.array(z.string()).optional(),
+        name: z.string(),
+        description: z.string(),
+        repository: z.string(),
+        deploy: z.string(),
+        thumbnail: z.string(),
+        tags: z.array(z.string()),
       })
     }),
     async resolve({ input }) {

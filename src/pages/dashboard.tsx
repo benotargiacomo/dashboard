@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import { Project } from '@prisma/client';
+import React, { useEffect, useState } from 'react';
 import { trpc } from '@/utils/trpc';
 
 import { EditWork } from '@/components/EditWork';
 import { AddWork } from '@/components/AddWork';
 
+
 const Dashboard: React.FC = () => {
-  const [editIsVisible, setEditIsVisible] = useState<boolean>(false);
   const [addIsVisible, setAddIsVisible] = useState<boolean>(false);
+  const [editIsVisible, setEditIsVisible] = useState<boolean>(false);
+  const [currentEditId, setCurrentEditId] = useState<string>('');
   const { data, status } = trpc.useQuery(['work.getAll']);
   const utils = trpc.useContext()
+  
+  const isActive = addIsVisible || editIsVisible;
 
   const { mutate } = trpc.useMutation('work.delete', {
     async onSuccess() {
@@ -17,13 +20,10 @@ const Dashboard: React.FC = () => {
     },
   });
   
-  const addProjectToggle = () => {
-    setAddIsVisible((previousValue) => !previousValue);
-  }
+  const editProjectToggle = (id: string) => {
+    setCurrentEditId(id)
 
-  const editProject = (work: Project & { tags: { name: string; }[]}) => {
     setEditIsVisible(true);
-    console.log(work);
   }
 
   const deleteProject = (id: string)=> {
@@ -31,12 +31,18 @@ const Dashboard: React.FC = () => {
     mutate({ id })
   }
 
+  useEffect(() => {
+    for (const { id } of data ?? []) {
+      utils.prefetchQuery(['work.getById', { id }]);
+    }
+  }, [data, utils]);
+
   return (
     <>
       <h1>Dashboard</h1>
-      <button type="button" disabled={ addIsVisible } onClick={ addProjectToggle }>ADD</button>
-      { addIsVisible && <AddWork addProjectToggle={ addProjectToggle }/>}
-      { editIsVisible && <EditWork setEditIsVisible={setEditIsVisible} />}
+      <button type="button" disabled={ isActive } onClick={ () => setAddIsVisible(true) }>ADD</button>
+      { addIsVisible && <AddWork  setAddIsVisible={  setAddIsVisible } /> }
+      { editIsVisible && <EditWork currentEditId={ currentEditId } setEditIsVisible={ setEditIsVisible } /> }
       <main>
         <li>
           {data?.map((work) => (
@@ -44,8 +50,8 @@ const Dashboard: React.FC = () => {
               <div className="flex flex-col gap-2">
                 <span>{work.name}</span>
                 <span>{work.description}</span>
-                <button type='button' onClick={() => deleteProject(work.id) }>DELETE</button>
-                <button type='button' onClick={() => editProject(work) }>EDIT</button>
+                <button type='button' disabled={ isActive } onClick={() => deleteProject(work.id) }>DELETE</button>
+                <button type='button' disabled={ isActive } onClick={ () => editProjectToggle(work.id) }>EDIT</button>
               </div>
             </ul>
           ))}
