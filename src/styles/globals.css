@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-800;
+  @apply bg-white font-pop;
   --webkit-font-smoothing: antialiased;
 }
