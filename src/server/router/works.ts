@@ -54,7 +54,6 @@ export const workRouter = trpc.router()
       description: z.string(),
       repository: z.string(),
       deploy: z.string(),
-      thumbnail: z.string(),
       tags: z.array(z.string()),
     }),
     async resolve({ input }) {
@@ -64,7 +63,6 @@ export const workRouter = trpc.router()
           description: input.description,
           repository: input.repository,
           deploy: input.deploy,
-          thumbnail: input.thumbnail,
           tags: {
             connectOrCreate: input.tags.map((tag) => {
               return {
@@ -87,7 +85,6 @@ export const workRouter = trpc.router()
         description: z.string(),
         repository: z.string(),
         deploy: z.string(),
-        thumbnail: z.string(),
         tags: z.array(z.string()),
       })
     }),
@@ -101,7 +98,6 @@ export const workRouter = trpc.router()
           description: input.data.description,
           repository: input.data.repository,
           deploy: input.data.deploy,
-          thumbnail: input.data.thumbnail,
           tags: {
             connectOrCreate: input.data.tags?.map((tag) => {
               return {

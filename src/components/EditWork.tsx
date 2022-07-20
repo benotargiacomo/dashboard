@@ -24,10 +24,6 @@ const editSchema = z.object({
     .string()
     .min(1, { message: 'Deploy is required' })
     .url({ message: 'Invalid url' }),
-  thumbnail: z
-    .string()
-    .min(1, { message: 'Thumbnail is required' })
-    .url({ message: 'Invalid url' }),
   tags: z.string().min(1, { message: 'Tags is required' }),
 });
 
@@ -58,7 +54,6 @@ export const EditWork: React.FC<EditProps> = ({ currentEditId: id, setEditIsVisi
       description: data?.description,
       repository: data?.repository,
       deploy: data?.repository,
-      thumbnail: '',
       tags: '',
     },
     resolver: zodResolver(editSchema),
@@ -73,7 +68,6 @@ export const EditWork: React.FC<EditProps> = ({ currentEditId: id, setEditIsVisi
     //     description: data.description,
     //     repository: data.repository,
     //     deploy: data.deploy,
-    //     thumbnail: data.thumbnail,
     //     tags: data.tags.split(', '),
     //   }
     // });
@@ -106,8 +100,6 @@ export const EditWork: React.FC<EditProps> = ({ currentEditId: id, setEditIsVisi
           <Error>{errors.repository?.message}</Error>
           <input {...register('deploy')} placeholder="Deploy" />
           <Error>{errors.deploy?.message}</Error>
-          <input {...register('thumbnail')} placeholder="Thumbnail" />
-          <Error>{errors.thumbnail?.message}</Error>
           <input {...register('tags')} placeholder="Tags" />
           <Error>{errors.tags?.message}</Error>
           <button type="button" onClick={() => setEditIsVisible(false)}>

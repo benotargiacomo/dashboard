@@ -23,10 +23,6 @@ const addSchema = z.object({
     .string()
     .min(1, { message: 'Deploy is required' })
     .url({ message: 'Invalid url' }),
-  thumbnail: z
-    .string()
-    .min(1, { message: 'Thumbnail is required' })
-    .url({ message: 'Invalid url' }),
   tags: z.string().min(1, { message: 'Tags is required' }),
 });
 
@@ -55,7 +51,6 @@ export const AddWork: React.FC<AddProps> = ({ setAddIsVisible }) => {
       description: '',
       repository: '',
       deploy: '',
-      thumbnail: '',
       tags: '',
     },
     resolver: zodResolver(addSchema),
@@ -73,7 +68,6 @@ export const AddWork: React.FC<AddProps> = ({ setAddIsVisible }) => {
       description: work.description,
       repository: work.repository,
       deploy: work.deploy,
-      thumbnail: work.thumbnail,
       tags: work.tags.split(', '),
     });
   };
@@ -99,8 +93,6 @@ export const AddWork: React.FC<AddProps> = ({ setAddIsVisible }) => {
         <Error>{errors.repository?.message}</Error>
         <input {...register('deploy')} placeholder="Deploy" />
         <Error>{errors.deploy?.message}</Error>
-        <input {...register('thumbnail')} placeholder="Thumbnail" />
-        <Error>{errors.thumbnail?.message}</Error>
         <input {...register('tags')} placeholder="Tags" />
         <Error>{errors.tags?.message}</Error>
         <button type="button" onClick={() => setAddIsVisible(false)}>
