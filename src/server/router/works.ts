@@ -1,10 +1,10 @@
-import * as trpc from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { prisma } from '@/db/client';
+import { createRouter } from '@/server/createRouter';
 
-export const workRouter = trpc.router()
+export const workRouter = createRouter()
   .query('getAll', {
     async resolve() {
       const works = await prisma.project.findMany({

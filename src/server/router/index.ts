@@ -1,10 +1,8 @@
-import * as trpc from '@trpc/server';
-import { Context } from '@/server/createContext';
+import { createRouter } from '@/server/createRouter';
 
 import { workRouter } from './works';
 
-export const appRouter = trpc
-  .router<Context>()
+export const appRouter = createRouter()
   .merge("work.", workRouter);
 
 // export type definition of API
