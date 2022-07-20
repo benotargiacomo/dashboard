@@ -36,19 +36,24 @@ export default withTRPC<AppRouter>({
 
     return {
       headers() {
-        return {
-          cookie: ctx?.req?.headers.cookie,
+        if (ctx?.req) {
+          return {
+            ...ctx.req.headers,
+            'x-ssr': '1',
+          }
         };
+
+        return {}
       },
       url,
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
-      // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+      queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
     };
   },
   /**
    * @link https://trpc.io/docs/ssr
    */
-  ssr: true,
+  ssr: false,
 })(MyApp);
