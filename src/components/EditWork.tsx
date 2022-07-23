@@ -37,9 +37,9 @@ interface EditProps {
 export const EditWork: React.FC<EditProps> = ({ currentEditId: id, setEditIsVisible }) => {
   const utils = trpc.useContext();
   const { data, status } = trpc.useQuery(['work.getById', { id }])
-  const { mutateAsync } = trpc.useMutation('work.edit', {
-    async onSuccess() {
-      await utils.invalidateQueries(['work.getAll']);
+  const { mutate } = trpc.useMutation('work.edit', {
+    onSuccess() {
+      utils.invalidateQueries(['work.getAll']);
     },
   });
 
@@ -61,7 +61,7 @@ export const EditWork: React.FC<EditProps> = ({ currentEditId: id, setEditIsVisi
 
   const editProject = (work: Inputs) => {
     console.log(work)
-    // mutateAsync({
+    // mutate({
     //   id,
     //   data: {
     //     name: data?.name,

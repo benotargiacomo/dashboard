@@ -34,9 +34,9 @@ interface AddProps {
 
 export const AddWork: React.FC<AddProps> = ({ setAddIsVisible }) => {
   const utils = trpc.useContext();
-  const { mutateAsync } = trpc.useMutation('work.create', {
-    async onSuccess() {
-      await utils.invalidateQueries(['work.getAll']);
+  const { mutate } = trpc.useMutation('work.create', {
+    onSuccess() {
+      utils.invalidateQueries(['work.getAll']);
     },
   });
 
@@ -63,7 +63,7 @@ export const AddWork: React.FC<AddProps> = ({ setAddIsVisible }) => {
   });
 
   const addProject = (work: Inputs) => {
-    mutateAsync({
+    mutate({
       name: work.name,
       description: work.description,
       repository: work.repository,
