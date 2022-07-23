@@ -35,18 +35,18 @@ export const WorkPanel: React.FC = () => {
     return (
       <main className="flex flex-col">
         { editIsVisible && <EditWork currentEditId={ currentEditId } setEditIsVisible={ setEditIsVisible } /> }
-        <li>
+        <ul>
         {data?.map((work) => (
-          <ul key={work.id}>
+          <li key={work.id}>
             <section className="flex flex-col border border-blue-500">
               <span>{work.name}</span>
               <span>{work.description}</span>
               <button type='button' onClick={() => deleteProject(work.id) }>DELETE</button>
               <button type='button' onClick={ () => editProjectToggle(work.id) }>EDIT</button>
             </section>
-          </ul>
+          </li>
         ))}
-      </li>
+      </ul>
     </main>
     );
 }
